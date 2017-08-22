@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Wysibb - Hiver.cc</title>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="wysibb/jquery.wysibb.min.js"></script>
+    <script src="wysibb/lang/cn.js"></script>
+    <script src="wysibb/plugins/dropify/js/dropify.min.js"></script>
+    <script src="wysibb/plugins/select2/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="wysibb/theme/default/wbbtheme.css" type="text/css" />
+    <link rel="stylesheet" href="wysibb/plugins/dropify/css/dropify.min.css" type="text/css" />
+    <link rel="stylesheet" href="wysibb/plugins/select2/css/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="wysibb/theme/hiver/wbbtheme.css" type="text/css" />
+</head>
+<body>
+    <div style="padding-top: 50px;">
+        <textarea id="editor"></textarea>
+    </div>
+<script>
+$(document).ready(function() {
+    var wbbOpt = {
+        lang: "cn",
+        buttons: "bold,italic,underline,|,img,link,|,removeformat,animation",
+        allButtons: {
+            animation: {
+                title: '插入动漫资源',
+                buttonText: "animation",
+                modal: {
+                    title: '插入动画资源',
+                    width: "600px",
+                    tabs: [
+                        {
+                            html: '<select name="wysibb-select" class="select2 inp-text"><option value="a"></options></select>'
+                        }
+                    ],
+                    onLoad: function() {
+                        $('.select2').select2();
+                    }
+                }
+            },
+            img: {
+                title: '插入图片',
+                buttonText: "img",
+                modal: {
+                    title: '插入图片',
+                    width: "600px",
+                    tabs: [
+                        {
+                            html: '<input type="file" name="wysibb-upload" class="dropify inp-text" /><input type="hidden" name="src" value="" />'
+                        }
+                    ],
+                    onLoad: function() {
+                        $('.dropify').dropify();
+                    },
+                    onSubmit: function() {
+                        
+                    }
+                },
+                transform: {
+                    '<img src="{src}" />':"[img]{src}[/img]"
+                }
+            }
+        }
+    }
+    $("#editor").wysibb(wbbOpt);
+});
+</script>
+</body>
+</html>
