@@ -5,13 +5,11 @@
     <title>Wysibb - Hiver.cc</title>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="wysibb/jquery.wysibb.min.js"></script>
+    <script src="wysibb/jquery.wysibb.js"></script>
     <script src="wysibb/lang/cn.js"></script>
-    <script src="wysibb/plugins/dropify/js/dropify.min.js"></script>
     <script src="wysibb/plugins/select2/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="wysibb/theme/default/wbbtheme.css" type="text/css" />
-    <link rel="stylesheet" href="wysibb/plugins/dropify/css/dropify.min.css" type="text/css" />
     <link rel="stylesheet" href="wysibb/plugins/select2/css/select2.min.css" type="text/css" />
     <link rel="stylesheet" href="wysibb/theme/hiver/wbbtheme.css" type="text/css" />
 </head>
@@ -23,6 +21,8 @@
 $(document).ready(function() {
     var wbbOpt = {
         lang: "cn",
+        img_uploadurl: 'wysibb/php/iupload.php',
+        imgupload: true,
         buttons: "bold,italic,underline,|,img,link,|,removeformat,animation",
         allButtons: {
             animation: {
@@ -37,35 +37,43 @@ $(document).ready(function() {
                         }
                     ],
                     onLoad: function() {
-                        $('.select2').select2();
+                        
                     }
                 }
             },
             img: {
-                title: '插入图片',
-                buttonText: "img",
+                title: CURLANG.img,
+                buttonText: '<span class="fonticon ve-tlb-img1">\uE006</span>',
+                hotkey: 'ctrl+shift+1',
+                addWrap: true,
                 modal: {
-                    title: '插入图片',
+                    title: CURLANG.modal_img_title,
                     width: "600px",
                     tabs: [
                         {
-                            html: '<input type="file" name="wysibb-upload" class="dropify inp-text" /><input type="hidden" name="src" value="" />'
+                            title: CURLANG.modal_img_tab2,
+                            html: '<div id="imguploader">'
+                            +'<form id="fupform" class="upload" action="{img_uploadurl}" method="post" enctype="multipart/form-data" target="fupload">'
+                            +'<input type="hidden" name="iframe" value="1"/>'
+                            +'<input type="hidden" name="idarea" value="img" />'
+                            +'<div class="fileupload">'
+                            +'<input id="fileupl" class="file inp-text" type="file" name="img" />'
+                            +'<button id="nicebtn" class="wbb-button">' + CURLANG.modal_img_btn + '</button>'
+                            +'</div></form></div>'
+                            +'<iframe id="fupload" name="fupload" src="about:blank" frameborder="0" style="width:0px;height:0px;display:none"></iframe></div>'
                         }
                     ],
-                    onLoad: function() {
-                        $('.dropify').dropify();
-                    },
-                    onSubmit: function() {
-                        
-                    }
+                    onLoad: this.imgLoadModal,
+                    onSubmit: function() {}
                 },
                 transform: {
-                    '<img src="{src}" />':"[img]{src}[/img]"
+                    '<img src="{SRC}" />':"[img]{SRC}[/img]",
+                    '<img src="{SRC}" width="{WIDTH}" height="{HEIGHT}"/>':"[img width={WIDTH},height={HEIGHT}]{SRC}[/img]"
                 }
             }
         }
     }
-    $("#editor").wysibb(wbbOpt);
+    var editor = $("#editor").wysibb(wbbOpt);
 });
 </script>
 </body>
