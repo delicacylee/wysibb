@@ -8,9 +8,9 @@
 * [bootstrap](https://github.com/twbs/bootstrap)
 
 ## 软件截图
-![预览图1]()
+![预览图1](https://github.com/delicacylee/wysibb/blob/master/screen1.jpg)
 
-![预览图2]()
+![预览图2](https://github.com/delicacylee/wysibb/blob/master/screen2.jpg)
 
 ## 许可证
 软件遵循MIT协议 详情请见LICENSE文件
