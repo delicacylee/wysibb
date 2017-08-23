@@ -147,6 +147,116 @@
     font-size: 16px;
 }
 
-.dropify-wrapper {
-    width: auto;
+/* Modal样式 */
+#insertAnimationModal .modal-dialog {
+    max-width: 400px;
+    height: 350px;
+}
+
+.hiver-modal .modal-dialog .modal-content {
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+.hiver-modal .modal-dialog .modal-content .modal-header {
+    color: #fff;
+    background: #14B9C8;
+}
+
+.hiver-modal .modal-dialog .modal-content .modal-header>button {
+    color: #fff;
+    opacity: 1;
+}
+
+.hiver-modal .modal-dialog .modal-content .modal-body {
+    padding: 20px;
+    height: 260px;
+}
+
+.hiver-modal .modal-dialog .modal-content .modal-footer {
+    padding: 13px 20px;
+    text-align: center;
+}
+
+.hiver-modal .modal-dialog .modal-content .modal-footer .btn {
+    padding: 5px 20px;
+    line-height: 20px;
+    border-radius: 3px;
+}
+
+.btn-default, .btn-primary {
+    border-radius: 3px;
+    box-shadow: none;
+}
+
+.btn-default, .btn-default:hover {
+    color: #12A7B4;
+    border-color: #12A7B4;
+}
+
+.btn-default {
+    background: 0 0;
+}
+
+.btn-default:hover {
+    background: #b4ebfa;
+}
+
+.btn-primary {
+    border-color: #12A7B4;
+    background: #12A7B4;
+}
+
+.btn-primary:hover {
+    color: #12A7B4;
+    border-color: #b4ebfa!important;
+    background: #b4ebfa!important;
+}
+
+#insertAnimationModal .modal-footer .btn-primary:disabled,
+#insertAnimationModal .modal-footer .btn-primary:disabled:hover {
+    background-color: #ccc!important;
+    border-color: #ccc!important;
+    color: #fff;
+}
+
+/* select2 */
+.select2-container--default .select2-selection--single {
+    border-radius: 0px;
+    height: 30px;
+    border: 1px solid #14b9c8;
+}
+
+.select2-container--default .select2-results>.select2-results__options {
+    height: 150px;
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.select2-dropdown {
+    border-radius: 0px;
+    border: 1px solid #ddd;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid #ddd;
+}
+
+.select2-results ul {
+    padding: 5px 10px;
+}
+
+.select2-results__option {
+    padding: 7.5px 18px;
+    border-radius: 4px;
+    color: #666;
+    cursor: pointer;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #dedede;
+    color: #666;
 }

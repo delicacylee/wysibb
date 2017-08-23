@@ -14,11 +14,94 @@
     <link rel="stylesheet" href="wysibb/theme/hiver/wbbtheme.css" type="text/css" />
 </head>
 <body>
-    <div style="padding-top: 50px;">
-        <textarea id="editor"></textarea>
+<div style="padding: 50px;">
+    <textarea id="editor" style="height: 300px;" class="form-control"></textarea>
+</div>
+<!-- Modal -->
+<div class="modal fade hiver-modal" data="0" id="insertAnimationModal" role="dialog" aria-labelledby="insertAnimationModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="insertAnimationModalLabel">添加动画</h4>
+            </div>
+            <div class="modal-body">
+                <select class="form-control" id="animation_select2" style="width: 100%;">
+                    <option value="0" selected="selected"></option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">添加</button>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 <script>
+function formatRepo (repo) {
+    if (repo.loading) return repo.text;
+
+    var markup = repo.full_name ;
+
+    return markup;
+}
+
+function formatRepoSelection (repo) {
+    return repo.full_name || repo.text;
+}
+
 $(document).ready(function() {
+    $("#animation_select2").select2({
+        ajax: {
+            url: "https://api.github.com/search/repositories",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, params) {
+            // parse the results into the format expected by Select2
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data, except to indicate that infinite
+            // scrolling can be used
+            params.page = params.page || 1;
+
+            return {
+                    results: data.items,
+                    pagination: {
+                    more: (params.page * 30) < data.total_count
+                }};
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: formatRepo, // omitted for brevity, see the source of this page
+        templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+    });
+
+    // 点击确定
+    $(".btn-primary").click(function(){
+        var id = $("#animation_select2").val();
+        var title = $("#animation_select2").select2("data")[0].full_name;
+        if(id > 0) {
+            var data = '<img data-app-id="'+id+'" data-app-title="'+title.trim()+'" src="1.jpg">';
+            $("#editor").insertAtCursor(data);
+        }
+    });
+
+    var mymodal = function(cmd, opt, queryState) {
+        $('#insertAnimationModal').modal();
+        if (queryState) {
+            this.wbbRemoveCallback(cmd, true);
+        }
+    }
+
     var wbbOpt = {
         lang: "cn",
         img_uploadurl: 'wysibb/php/iupload.php',
@@ -26,39 +109,30 @@ $(document).ready(function() {
         buttons: "bold,italic,underline,|,img,link,|,removeformat,animation",
         allButtons: {
             animation: {
-                title: '插入动漫资源',
+                title: '插入动漫',
                 buttonText: "animation",
-                modal: {
-                    title: '插入动画资源',
-                    width: "600px",
-                    tabs: [
-                        {
-                            html: '<select name="wysibb-select" class="select2 inp-text"><option value="a"></options></select>'
-                        }
-                    ],
-                    onLoad: function() {
-                        
-                    }
+                modal: mymodal,
+                transform: {
+                    '<img data-app-id="{ID}" data-app-title="{TITLE}" src="1.jpg" />':'[animation={ID}]{TITLE}[/animation]'
                 }
             },
             img: {
-                title: CURLANG.img,
+                title: '插入图片',
                 buttonText: '<span class="fonticon ve-tlb-img1">\uE006</span>',
                 hotkey: 'ctrl+shift+1',
                 addWrap: true,
                 modal: {
-                    title: CURLANG.modal_img_title,
+                    title: '插入图片',
                     width: "600px",
                     tabs: [
                         {
-                            title: CURLANG.modal_img_tab2,
                             html: '<div id="imguploader">'
                             +'<form id="fupform" class="upload" action="{img_uploadurl}" method="post" enctype="multipart/form-data" target="fupload">'
                             +'<input type="hidden" name="iframe" value="1"/>'
                             +'<input type="hidden" name="idarea" value="img" />'
                             +'<div class="fileupload">'
                             +'<input id="fileupl" class="file inp-text" type="file" name="img" />'
-                            +'<button id="nicebtn" class="wbb-button">' + CURLANG.modal_img_btn + '</button>'
+                            +'<button id="nicebtn" class="wbb-button">选择文件</button>'
                             +'</div></form></div>'
                             +'<iframe id="fupload" name="fupload" src="about:blank" frameborder="0" style="width:0px;height:0px;display:none"></iframe></div>'
                         }
